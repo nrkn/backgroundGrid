@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>jquery backgroundGrid</title>    
+    <style>
+      body {
+        background: url( test.png );  
+      }
+      
+      div {
+        position: absolute;
+        width: 50%;
+        height: 50%;      
+      }
+      
+      .default {
+        top: 0;
+        left: 0;
+      }
+      
+      .blue {
+        top: 0;
+        left: 50%;
+      }
+      
+      .large {
+        top: 50%;
+        left: 0;
+      }
+      
+      .self {
+        top: 50%;
+        left: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="default"></div>
+    <div class="blue"></div>
+    <div class="large"></div>
+    <div class="self"></div>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="../jquery.backgroundGrid.js"></script>
+    <script>
+      $( function(){
+        $( '.default' ).backgroundGrid();
+        
+        $( '.blue' ).backgroundGrid({
+          colors: {
+            highlight: 'transparent',
+            shadow: 'rgba( 0, 128, 255, 0.5 )'
+          },
+          getDivisionColors: function( division ){
+            var opacity = 0.5 * Math.pow( 0.5, division + 1 );
+            return {
+              highlight: 'transparent',
+              shadow: 'rgba( 0, 128, 255, ' + opacity + ' )'
+            };
+          }          
+        });
+        
+        $( '.large' ).backgroundGrid({
+          size: {
+            width: 256,
+            height: 256
+          }
+        });
+        
+        $( window ).resize( function(){
+          var $self = $( '.self' );
+          $self.backgroundGrid({
+            size: {
+              width: $self.width(),
+              height: $self.height()
+            },
+            colors: {
+              highlight: 'transparent',
+              shadow: '#f00'
+            },
+            subdivide: 4,
+            getDivisionColors: function( division ){
+              var opacity = Math.pow( 0.75, division + 1 );
+              return {
+                highlight: 'transparent',
+                shadow: 'rgba( 255, 0, 0, ' + opacity + ' )'
+              };
+            }  
+          });        
+        });  
+        $( window ).trigger( 'resize' );
+      });      
+    </script>
+  </body>
+</html>
